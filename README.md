@@ -1,7 +1,14 @@
 # ZXingScan
 
-先说已值问题，扫描只能竖屏扫描，横屏很多问题未去解决。
-动态获取权限稍后制作。
+先说已知问题，扫描只能竖屏扫描，横屏很多问题未去解决。
+动态获取权限稍后制作。（已完成）
+需要添加
+
+    <activity
+        android:name=".PermissionsActivity"
+        android:theme="@style/AppTheme.NoActionBar">
+	</activity>
+	
 
 个性化定制，则直接在CaptureActivity将XML更换即可。
 
@@ -10,10 +17,11 @@
 
 添加Activity代码
 
-        <activity
-            android:name="org.zxing.scan.ui.CaptureActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-		</activity>
+    <activity
+        android:name="org.zxing.scan.ui.CaptureActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar">
+	</activity>
 
 	
 添加权限
