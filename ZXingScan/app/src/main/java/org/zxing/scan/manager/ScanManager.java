@@ -13,7 +13,6 @@ import android.view.WindowManager;
 
 import org.zxing.scan.decode.DecodeManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -66,7 +65,7 @@ public class ScanManager implements Callback {
             createConfig(mCamera);
             startPreview();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             relase();
             e.printStackTrace();
         }
@@ -136,7 +135,8 @@ public class ScanManager implements Callback {
             Log.d(TAG, "surfaceDestroyed");
         isPreview = false;
         holder.removeCallback(this);
-        mCamera.setPreviewCallback(null);
+        if (mCamera != null)
+            mCamera.setPreviewCallback(null);
         relase();
     }
 
@@ -163,7 +163,7 @@ public class ScanManager implements Callback {
         }
     }
 
-    public void stopPreview() {
+    public void stop() {
         Camera camera = mCamera;
 
         if (mAutofocus != null) {

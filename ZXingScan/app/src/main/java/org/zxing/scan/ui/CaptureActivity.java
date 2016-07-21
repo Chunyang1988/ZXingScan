@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.zxing.scan.manager.ScanCallback;
 import org.zxing.scan.manager.ScanManager;
@@ -19,7 +20,7 @@ import org.zxing.scan.zxingscan.R;
 public class CaptureActivity extends Activity implements ScanCallback {
 
     private SurfaceView mSurface;
-    private ScanManager mCamerManager;
+    private ScanManager mScanManager;
     private RelativeLayout scanCropView;
 
     @Override
@@ -31,7 +32,7 @@ public class CaptureActivity extends Activity implements ScanCallback {
 
         mSurface = (SurfaceView) findViewById(R.id.surface_view);
 
-        mCamerManager = new ScanManager(this, this);
+        mScanManager = new ScanManager(this, this);
 
         scanCropView = (RelativeLayout) findViewById(R.id.search_layout);
 
@@ -53,18 +54,22 @@ public class CaptureActivity extends Activity implements ScanCallback {
     @Override
     protected void onResume() {
         super.onResume();
-        mCamerManager.openDriver(mSurface.getHolder());
+        try {
+            mScanManager.openDriver(mSurface.getHolder());
+        } catch (Exception e) {
+            Toast.makeText(CaptureActivity.this, "打开相机失败", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mCamerManager.stopPreview();
+        mScanManager.stop();
     }
 
     public ScanManager getCameraManager() {
-        return mCamerManager;
+        return mScanManager;
     }
 
     public Rect getCropRect() {
