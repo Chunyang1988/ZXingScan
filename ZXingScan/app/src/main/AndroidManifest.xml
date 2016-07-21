@@ -31,10 +31,13 @@
 
         <activity
             android:name="org.zxing.scan.ui.CaptureActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ResultActivity">
         </activity>
-        <activity android:name=".ScanActivity">
+        <activity
+            android:name=".ScanActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
