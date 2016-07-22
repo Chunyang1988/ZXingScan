@@ -12,41 +12,34 @@ import java.io.ByteArrayOutputStream;
 
 public class ScanActivity extends CaptureActivity {
 
-    private static final int REQUEST_CODE = 0; // 请求码
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.CAMERA,
-            Manifest.permission.WAKE_LOCK
-    };
-    private PermissionsChecker mPermissionsChecker;
+
+    private CheckPermission mCheckPermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPermissionsChecker = new PermissionsChecker(this);
+        mCheckPermission = new CheckPermission(this) {
+            @Override
+            String[] getPermissions() {
+                return new String[]{
+                        Manifest.permission.CAMERA
+                };
+            }
+        };
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // 缺少权限时, 进入权限配置页面
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }
-    }
-
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, REQUEST_CODE, PERMISSIONS);
+        mCheckPermission.checkPermission();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-            finish();
-        }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mCheckPermission.checkRequestPermissionsResult(requestCode, grantResults);
     }
+
 
     @Override
     public void onResult(ZXing zxing) {
