@@ -60,3 +60,32 @@
 	
 	//结束解码
 	void unsubscribe()
+	
+##添加动态授权代码
+
+##a.初始化
+
+	mCheckPermission = new CheckPermission(this) {
+		@Override
+		String[] getPermissions() {
+			return new String[]{
+					Manifest.permission.CAMERA
+			};
+		}
+	};
+
+b.检查权限
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mCheckPermission.checkPermission();
+    }
+
+c.实现onRequestPermissionsResult
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mCheckPermission.checkRequestPermissionsResult(requestCode, grantResults);
+    }
